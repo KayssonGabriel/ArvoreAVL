@@ -1,5 +1,7 @@
 package arquivoDados;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -10,32 +12,28 @@ public class Arquivo {
     public int[] lerArquivo(String url) {
         Path caminho = Paths.get(url); // Vai receber o caminho do arquivo
 
-        String leitura = "";
-
+        String leitura;
         try {
-            byte[] texto = Files.readAllBytes(caminho);
-
-            leitura = new String(texto);
-
-        } catch (Exception e) {
-            System.out.println("Não foi possível ler o arquivo!");
+            leitura = Files.readString(caminho).trim();
+        } catch (IOException e) {
+            throw new UncheckedIOException("Não foi possível ler " + caminho, e);
         }
 
         ArrayList<Integer> protoVetor = new ArrayList<>();
 
-        String num = "";
+        StringBuilder num = new StringBuilder();
 
         for (int i = 0; i < leitura.length(); i++) {
-            if (leitura.charAt(i) != '[' && leitura.charAt(i) != ']' && leitura.charAt(i) != ','
-                    && leitura.charAt(i) != ' ') {
-                num += leitura.charAt(i);
-            } else {
-                if (num != "") {
-                    int numero = Integer.parseInt(num);
-                    protoVetor.add(numero);
-                    num = "";
-                }
+            char caractere = leitura.charAt(i);
+            if (caractere != '[' && caractere != ']' && caractere != ',' && !Character.isWhitespace(caractere)) {
+                num.append(caractere);
+            } else if (num.length() > 0) {
+                protoVetor.add(Integer.parseInt(num.toString()));
+                num.setLength(0);
             }
+        }
+        if (num.length() > 0) {
+            protoVetor.add(Integer.parseInt(num.toString()));
         }
 
         int[] vetor = new int[protoVetor.size()];
@@ -62,12 +60,10 @@ public class Arquivo {
 
         String vetor = cabecalho + Arrays.toString(conteudo);
 
-        byte[] textoEmBytes = vetor.getBytes();
-
         try {
-            Files.write(caminho, textoEmBytes);
-        } catch (Exception e) {
-            System.out.println("Erro!!!");
+            Files.writeString(caminho, vetor);
+        } catch (IOException e) {
+            throw new UncheckedIOException("Não foi possível gravar " + caminho, e);
         }
 
     }

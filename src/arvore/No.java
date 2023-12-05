@@ -4,6 +4,7 @@ package arvore;
 public class No {
     int item;
     int altura;
+    int ocorrencias = 1;
     No left;
     No right;
 

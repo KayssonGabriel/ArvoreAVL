@@ -52,8 +52,10 @@ public class ArvoreAVL {
             no.left = insertNo(no.left, item);
         else if (item > no.item)
             no.right = insertNo(no.right, item);
-        else
+        else {
+            no.ocorrencias++;
             return no;
+        }
 
         // Atualiza o fator de balanceamento de cada No e faz o balanceamento da árvore
         no.altura = 1 + max(altura(no.left), altura(no.right));
@@ -94,7 +96,10 @@ public class ArvoreAVL {
             raiz.left = deleteNo(raiz.left, item);
         else if (item > raiz.item)
             raiz.right = deleteNo(raiz.right, item);
-        else {
+        else if (raiz.ocorrencias > 1) {
+            raiz.ocorrencias--;
+            return raiz;
+        } else {
             if ((raiz.left == null) || (raiz.right == null)) {
                 No temp = null;
                 if (temp == raiz.left)
@@ -109,6 +114,8 @@ public class ArvoreAVL {
             } else {
                 No temp = noWithMimumValue(raiz.right);
                 raiz.item = temp.item;
+                raiz.ocorrencias = temp.ocorrencias;
+                temp.ocorrencias = 1;
                 raiz.right = deleteNo(raiz.right, temp.item);
             }
         }
@@ -139,7 +146,9 @@ public class ArvoreAVL {
 
     void preOrder(No no) {
         if (no != null) {
-            System.out.print(no.item + " ");
+            for (int i = 0; i < no.ocorrencias; i++) {
+                System.out.print(no.item + " ");
+            }
             preOrder(no.left);
             preOrder(no.right);
         }
@@ -148,7 +157,9 @@ public class ArvoreAVL {
     public void inOrder(No no) {
         if (no != null) {
             inOrder(no.left);
-            System.out.print(no.item + " ");
+            for (int i = 0; i < no.ocorrencias; i++) {
+                System.out.print(no.item + " ");
+            }
             inOrder(no.right);
         }
     }
@@ -157,7 +168,9 @@ public class ArvoreAVL {
         if (no != null) {
             posOrder(no.left);
             posOrder(no.right);
-            System.out.print(no.item + " ");
+            for (int i = 0; i < no.ocorrencias; i++) {
+                System.out.print(no.item + " ");
+            }
         }
     }
 
@@ -177,7 +190,9 @@ public class ArvoreAVL {
     private void inOrderCollect(No no, ArrayList<Integer> resultList) {
         if (no != null) {
             inOrderCollect(no.left, resultList);
-            resultList.add(no.item);
+            for (int i = 0; i < no.ocorrencias; i++) {
+                resultList.add(no.item);
+            }
             inOrderCollect(no.right, resultList);
         }
     }

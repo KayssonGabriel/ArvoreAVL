@@ -1,74 +1,54 @@
-//Fazer um programa utilizando uma árvore AVL. Inserir os  dos dados apresentados nos arquivos da aula 02 e fazer a impressão
-// em ordem dos dados.  O programa deve marcar o tempo para a impressão de todos os dados.  (somente para o arquivo de 100.000 números).
-// Faça a comparação com o mesmo arquivo utilizando um algoritmo de ordenação de sua escolha.
-//
-//Fazer um vídeo de 5 a 15 min.  Apresentando o programa, explicando o código e mostrando os resultados para cada arquivo.
-
-
 package app;
 
 import algoOrdenacao.MergeSort;
 import arquivoDados.Arquivo;
 import arvore.ArvoreAVL;
 
-import java.util.Stack;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.concurrent.TimeUnit;
 
 public class App {
     public static void main(String[] args) throws Exception {
-        ArvoreAVL arvore = new ArvoreAVL();
-        MergeSort mergeSort = new MergeSort();
+        Path entrada = Path.of(args.length > 0 ? args[0] : "src/arquivoDados/dados100_mil.txt");
+        Path saida = Path.of(args.length > 1 ? args[1] : "resultados");
         Arquivo arquivo = new Arquivo();
+        int[] vetor = arquivo.lerArquivo(entrada.toString());
+        Files.createDirectories(saida);
 
-        int[] vetor = arquivo.lerArquivo("C:\\Users\\kayss\\Documents\\ED2\\ArvoreAVL\\src\\arquivoDados\\dados100_mil.txt");
-
-
-        // Arvore AVL
-        for (int i = 0; i < vetor.length; i++) {
-            arvore.raiz = arvore.insertNo(arvore.raiz, vetor[i]);
+        ArvoreAVL arvore = new ArvoreAVL();
+        long inicioAVL = System.nanoTime();
+        for (int numero : vetor) {
+            arvore.raiz = arvore.insertNo(arvore.raiz, numero);
         }
-        long inicioAVL = System.currentTimeMillis();
-        int[] vetorResultadosAVL = arvore.inOrderToArray(arvore.raiz);
-        long fimAVL = System.currentTimeMillis();
-        long tempoAVL = fimAVL - inicioAVL;
+        int[] resultadoAVL = arvore.inOrderToArray(arvore.raiz);
+        long tempoAVL = tempoDecorridoEmMilissegundos(inicioAVL);
+        arquivo.gravarArquivo(saida.resolve("ArvoreDadosGravados100_mil.txt").toString(), resultadoAVL, "Arvore AVL", tempoAVL);
 
-
-        // Merge Sort
-        long inicioMerge = System.currentTimeMillis();
+        MergeSort mergeSort = new MergeSort();
+        long inicioMerge = System.nanoTime();
         mergeSort.mergeSort(vetor, 0, vetor.length - 1);
-        long fimMerge = System.currentTimeMillis();
-        long tempoMerge = fimMerge - inicioMerge;
+        long tempoMerge = tempoDecorridoEmMilissegundos(inicioMerge);
+        arquivo.gravarArquivo(saida.resolve("MergeSortDadosGravados100_mil.txt").toString(), vetor, "Merge Sort", tempoMerge);
 
-        // Gravar a árvore no arquivo
-        arquivo.gravarArquivo("C:\\Users\\kayss\\Documents\\ED2\\ArvoreAVL\\src\\arquivoDados\\Gravados\\ArvoreDadosGravados100_mil.txt", vetorResultadosAVL, "Arvore AVL", tempoAVL);
-
-        // Gravar Merge Sort no arquivo
-        arquivo.gravarArquivo("C:\\Users\\kayss\\Documents\\ED2\\ArvoreAVL\\src\\arquivoDados\\Gravados\\MergeSortDadosGravados100_mil.txt", vetor, "Merge Sort", tempoMerge);
-
-
-        long inicioMergeOrd = System.currentTimeMillis();
+        long inicioMergeOrd = System.nanoTime();
         mergeSort.mergeSort(vetor, 0, vetor.length - 1);
-        long fimMergeOrd = System.currentTimeMillis();
-        long tempoMergeOrd = fimMergeOrd - inicioMergeOrd;
+        long tempoMergeOrd = tempoDecorridoEmMilissegundos(inicioMergeOrd);
+        arquivo.gravarArquivo(saida.resolve("já ordenado MergeSortDadosGravados100_mil.txt").toString(), vetor, "Merge Sort", tempoMergeOrd);
 
-        arquivo.gravarArquivo("C:\\Users\\kayss\\Documents\\ED2\\ArvoreAVL\\src\\arquivoDados\\Gravados\\já ordenado MergeSortDadosGravados100_mil.txt", vetor, "Merge Sort", tempoMerge);
+        for (int i = 0, j = vetor.length - 1; i < j; i++, j--) {
+            int temp = vetor[i];
+            vetor[i] = vetor[j];
+            vetor[j] = temp;
+        }
 
-
-        //Inverter vetor
-        Stack<Integer> pilha = new Stack<>();
-        for (int numero : vetor)
-            pilha.push(numero);
-
-        for (int i = 0; i < vetor.length; i++)
-            vetor[i] = pilha.pop();
-
-        long inicioMergeIn = System.currentTimeMillis();
+        long inicioMergeIn = System.nanoTime();
         mergeSort.mergeSort(vetor, 0, vetor.length - 1);
-        long fimMergeIn = System.currentTimeMillis();
-        long tempoMergeIn = fimMergeIn - inicioMergeIn;
+        long tempoMergeIn = tempoDecorridoEmMilissegundos(inicioMergeIn);
+        arquivo.gravarArquivo(saida.resolve("já inversamente ordenado MergeSortDadosGravados100_mil.txt").toString(), vetor, "Merge Sort", tempoMergeIn);
+    }
 
-
-        // invers
-        arquivo.gravarArquivo("C:\\Users\\kayss\\Documents\\ED2\\ArvoreAVL\\src\\arquivoDados\\Gravados\\já inversamente ordenaodo MergeSortDadosGravados100_mil.txt", vetor, "Merge Sort", tempoMerge);
-
+    private static long tempoDecorridoEmMilissegundos(long inicio) {
+        return TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - inicio);
     }
 }

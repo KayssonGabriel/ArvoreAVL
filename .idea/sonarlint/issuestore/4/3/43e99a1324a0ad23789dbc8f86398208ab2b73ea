@@ -1,0 +1,15 @@
+
+m
+java:S1192-"KDefine a constant instead of duplicating this literal "Merge Sort" 3 times.(¹ÖØÚşÿÿÿÿ8†ÎŒ¿Ã1
+r
+java:S11499"PReplace the synchronized class "Stack" by an unsynchronized one such as "Deque".(¡íÓŠøÿÿÿÿ8şÆŠ¿Ã1
+^
+java:S18543"ARemove this useless assignment to local variable "tempoMergeOrd".(Äˆ¯‘8´¤€¿Ã1
+b
+java:S1854C"@Remove this useless assignment to local variable "tempoMergeIn".(âöÔùÿÿÿÿ8¥ÎŒ¿Ã1
+
+java:S1130"lRemove the declaration of thrown exception 'java.lang.Exception', as it cannot be thrown from method's body.(ÙØ¤Şıÿÿÿÿ8´¤€¿Ã1
+O
+java:S14813"2Remove this unused "tempoMergeOrd" local variable.(Äˆ¯‘8ì˜¿Ã1
+S
+java:S1481C"1Remove this unused "tempoMergeIn" local variable.(âöÔùÿÿÿÿ8Üµ¿Ã1

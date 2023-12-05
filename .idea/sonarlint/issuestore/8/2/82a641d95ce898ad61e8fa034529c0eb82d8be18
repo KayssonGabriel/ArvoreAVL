@@ -1,0 +1,14 @@
+
+r
+java:S1104"PMake raiz a static final constant or non-public and provide accessors if needed.(Ä”¯¹úÿÿÿÿ8¹ÜÈ³Ã1
+t
+java:S3776Y"RRefactor this method to reduce its Cognitive Complexity from 25 to the 15 allowed.(§®ÌÙøÿÿÿÿ8ØÜÈ³Ã1
+Z
+java:S1854i"8Remove this useless assignment to local variable "temp".(Éêàüÿÿÿÿ8ØÜÈ³Ã1
+M	java:S106"+Replace this use of System.out by a logger.(ªÌğˆıÿÿÿÿ8ØÜÈ³Ã1
+M	java:S106—"+Replace this use of System.out by a logger.(ªÌğˆıÿÿÿÿ8ØÜÈ³Ã1
+M	java:S106 "+Replace this use of System.out by a logger.(ªÌğˆıÿÿÿÿ8ØÜÈ³Ã1
+H	java:S106½"+Replace this use of System.out by a logger.(Éğ8ØÜÈ³Ã1
+M	java:S106¿"+Replace this use of System.out by a logger.(Œ“¡Æıÿÿÿÿ8ØÜÈ³Ã1
+M	java:S106Â"+Replace this use of System.out by a logger.(üøŒ„ûÿÿÿÿ8ØÜÈ³Ã1
+H	java:S106Å"+Replace this use of System.out by a logger.(×ŞåÓ8ØÜÈ³Ã1
